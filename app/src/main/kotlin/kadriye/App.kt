@@ -12,30 +12,38 @@ import com.github.ajalt.clikt.parameters.options.flag
 //import dev.kavatkedi.kadriye.dslengine.KadriyeTaskEngine
 import dev.kavatkedi.kadriye.dslengine.Kadriye
 
-/*class Kadriye {
-	fun run_task(task: String) {
-		println("Running $task")
-	}
-}*/
 class KadriyeParseArgs : CliktCommand(help="The build system with less boilerplate. Run the given TASK", name="kadriye"){
 	val task by argument()
 	val args: List<String> by argument().multiple()
 	override fun run() {
-		Kadriye.task("hello") { _ -> 
+		//TODO: Add the built-in `init` task
+		//TODO: Remove the example tasks
+		//TODO: Add execution code here
+
+		Kadriye.task("hello") { _ -> // example tasks
 			println("Hello world!")
 			0
 		}
-		Kadriye.task("args") { iargs ->
-			if(iargs == null) {
+		Kadriye.task("args") {
+			if(it == null) {
 				31
 			}
 			else {
-				for(arg in iargs!!.iterator())
+				for(arg in it!!.iterator())
 					echo("$arg")
 
 				0
 			}
 		}
+		Kadriye.task("echo") {
+			if(it==null) {
+				69
+			} else {
+				echo("$it[0]")
+			}
+		}
+		// if task was run, exit with its status code.
+		// Otherwise, exit with 31
 		throw ProgramResult(Kadriye.run(task, args) ?: 31)
 	}
 }
