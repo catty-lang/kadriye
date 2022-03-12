@@ -4,24 +4,40 @@
 package dev.kavatkedi.kadriye
 
 import kotlinx.cli.*
-import dev.kavatkedi.kadriye.dslengine.KadriyeEngine
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.ProgramResult
+import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.arguments.multiple
+import com.github.ajalt.clikt.parameters.options.flag
+//import dev.kavatkedi.kadriye.dslengine.KadriyeTaskEngine
+import dev.kavatkedi.kadriye.dslengine.Kadriye
 
-class Kadriye {
+/*class Kadriye {
 	fun run_task(task: String) {
 		println("Running $task")
 	}
+}*/
+class KadriyeParseArgs : CliktCommand(help="The build system with less boilerplate. Run the given TASK", name="kadriye"){
+	val task by argument()
+	val args: List<String> by argument().multiple()
+	override fun run() {
+		Kadriye.task("hello") { _ -> 
+			println("Hello world!")
+			0
+		}
+		Kadriye.task("args") { iargs ->
+			if(iargs == null) {
+				31
+			}
+			else {
+				for(arg in iargs!!.iterator())
+					echo("$arg")
+
+				0
+			}
+		}
+		throw ProgramResult(Kadriye.run(task, args) ?: 31)
+	}
 }
 
-fun main(args: Array<String>) {
-	val parser = ArgParser("kadriye")
-	val task by parser.argument(ArgType.String, "Task to run")
-	val engine = KadriyeEngine()
-	parser.parse(args)
-	engine.task("hello") {
-		_ ->
-		println("Hello, world!")
-		0
-	}
-	engine.run(task, args)
-	
-}
+fun main(args: Array<String>) = KadriyeParseArgs().main(args)

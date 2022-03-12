@@ -37,6 +37,7 @@ dependencies {
 
     // Use cli
     implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.4")
+    implementation("com.github.ajalt.clikt:clikt:3.4.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 }
 
